@@ -35,7 +35,11 @@ namespace mrxben001
         }
     }
 
-
+    /*
+    float getFloatFromCIN(int min, int max, char abortchar, int abortvalue)
+    Get a float value from std::cin
+    Allow abort and ensure valid return value.
+    */
     float getFloatFromCIN(int min, int max, char abortchar, int abortvalue)
     {
         std::string input = "";
@@ -61,12 +65,13 @@ namespace mrxben001
         }
     }
 
-
+    // get a valid non whitespace string
     std::string getStringFromCIN()
     {
         return getStringFromCIN(0);
     }
 
+    // get a valid non whitespace string with length > minlength
     std::string getStringFromCIN(int minlength)
     {
         std::string input = "";

@@ -26,6 +26,8 @@ The files make up the 'studentdb' program:
  $ make
 
  HOW TO RUN:
+ $ ./studentdb
+ OR
  $ ./studentdb -d "somedatabasefile.txt"
 
  HOW TO CLEAN:

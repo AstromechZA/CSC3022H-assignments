@@ -32,7 +32,7 @@ clean:
 
 tar:
 	rm -f $(TARBALL)
-	tar zcvf $(TARBALL) *.cpp *.h makefile README
+	tar zcvf $(TARBALL) *.cpp *.h makefile README dbfile.txt
 
 
 
