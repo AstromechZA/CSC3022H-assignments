@@ -37,6 +37,7 @@ namespace mrxben001
             void deleteAStudent();
 
             bool moveIterToStudent(std::list<student_record *>::iterator * spointer, std::string number);
+            void addstudentInOrder(student_record * student);
 
         private:
             std::string databasefile;

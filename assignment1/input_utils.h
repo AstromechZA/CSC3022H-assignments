@@ -9,8 +9,8 @@
 namespace mrxben001
 {
 
-    int getIntFromCIN(int min, int max);
-    float getFloatFromCIN(int min, int max, int bad);
+    int getIntFromCIN(int min, int max, char abortchar, int abortvalue);
+    float getFloatFromCIN(int min, int max, char abortchar, int abortvalue);
     std::string getStringFromCIN();
     std::string getStringFromCIN(int minlength);
 

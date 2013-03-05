@@ -42,10 +42,10 @@ int main(int argc, char * argv[])
     while (true)
     {
         printmenutext();
-        option = getIntFromCIN(0, 6);
-        if (option < 0) break;
+        option = getIntFromCIN(0, 6, 'q', -1);
+        if (option < 0) break;                      //abort
 
-        clearStdOut();    
+        clearStdOut();                              //clear the screen before processing
 
         switch ( option )
         {

@@ -49,9 +49,18 @@ namespace mrxben001
     std::string student_record::getClassRecordMarks()
     {
         std::stringstream out;
+        std::vector<float>::iterator it=classMarks.begin();
+        int i = 0;
+        for (std::vector<float>::iterator end = classMarks.end(); it < end; it++)
+        {
 
-        for (std::vector<float>::iterator it=classMarks.begin(), end = classMarks.end(); it < end; it++)
-            out << *it << " ";
+            if (i > 0) 
+                out << ", ";
+            else
+                i++;
+            out << *it;           
+        }
+
 
         return out.str();
     }

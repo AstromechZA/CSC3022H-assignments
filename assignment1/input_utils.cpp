@@ -10,10 +10,10 @@ namespace mrxben001
     is out of range or invalid, this will print appropriate messages and prompt for more input. The 'q'
     quit character is also supported and is returned as -1.
     */
-    int getIntFromCIN(int min, int max)
+    int getIntFromCIN(int min, int max, char abortchar, int abortvalue)
     {
         std::string input = "";
-        char inputchar = 'q';
+        char inputchar = abortchar;
         int output;
         while (true)
         {
@@ -28,7 +28,7 @@ namespace mrxben001
             {
                 // clear bad read flags, so we can read the same input again
                 mystream.clear();  
-                if((mystream >> inputchar) && (inputchar == 'q')) return -1;
+                if((mystream >> inputchar) && (inputchar == abortchar)) return abortvalue;
                 std::cout << "Invalid input, try again :" << std::endl;
             } 
             
@@ -36,10 +36,10 @@ namespace mrxben001
     }
 
 
-    float getFloatFromCIN(int min, int max, int bad)
+    float getFloatFromCIN(int min, int max, char abortchar, int abortvalue)
     {
         std::string input = "";
-        char inputchar = 'q';
+        char inputchar = abortchar;
         float output;
         while (true)
         {
@@ -54,7 +54,7 @@ namespace mrxben001
             {
                 // clear bad read flags, so we can read the same input again
                 mystream.clear();  
-                if((mystream >> inputchar) && (inputchar == 'q')) return bad;
+                if((mystream >> inputchar) && (inputchar == abortchar)) return abortvalue;
                 std::cout << "Invalid input, try again :" << std::endl;
             } 
             
