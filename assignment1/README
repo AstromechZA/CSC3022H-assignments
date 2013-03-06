@@ -1,26 +1,30 @@
 -==============================================================-
-STUDENT DATABASE assignment ONE part ONE - README
+STUDENT DATABASE assignment ONE part TWO - README
 
 Author: Benjamin Meier (MRXBEN001)
 Date:   March 2013
 
 -==============================================================-
 
+This studentdb program provides a text based menu for interaction with a list of
+student records. Records contain student information as well as marks making up their 
+class record, and are listed and controlled in a Database object.
+
+Loading and Saving from a file are used to make the database persistant, when a database is loaded, it
+clears the existing content before adding the new records.
+
+Records are sorted alphabetically on the student number and duplicates are always overwritten.
+
 The files make up the 'studentdb' program:
  
  - main.cpp/.h              : Contains main method, menu loop, and utility methods
  - cmdline_parser.cpp/.h    : Wrapper for the boost command line argument parser
- - database.cpp/.h          : Class stub for the database object
- - student_record.cpp/.h    : Class stub for the student record object
+ - database.cpp/.h          : Database object that contains the menu methods. Database object is managed here.
+ - student_record.cpp/.h    : Student Record Object
+ - input_utils.cpp/.h       : Safe / Sanitised input methods available everywhere.
  - makefile                 : The makefile for the project
  - studentdb                : The executable produced by the makefile
  - README                   : This file
-
- Part one of this assignment was to just build a text based menu system and to develop 
- method and class stubs for part two of the assignment. 
-
- The database.cpp object contains the menu method stubs since all of the menu options 
- are operations for the database to perform. This may change in part two when things get more complex.
 
  HOW TO BUILD:
  $ make
