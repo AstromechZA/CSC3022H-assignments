@@ -1,0 +1,23 @@
+-==============================================================-
+CSC3022H - Assignment 2 - Bucket String
+
+Author: Benjamin Meier (MRXBEN001)
+Date:   March 2013
+
+-==============================================================-
+The files make up the 'testbucketstr' program:
+ 
+ - main.cpp/.h              : Contains main method
+ - makefile                 : The makefile for the project
+ - README                   : This file
+
+ HOW TO BUILD:
+ $ make
+
+ HOW TO RUN:
+ $ ./testbucketstr
+ OR
+ $ ./testbucketstr -f "somedatabasefile.txt"
+
+ HOW TO CLEAN:
+ $ make clean
