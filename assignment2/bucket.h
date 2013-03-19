@@ -14,6 +14,9 @@ namespace mrxben001
             bucket(int size);
             ~bucket();
 
+            //copy constructor
+            bucket(const bucket & other);
+
             // NEXT
             void set_next(bucket * n);
             bucket * get_next();

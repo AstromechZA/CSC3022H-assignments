@@ -19,9 +19,17 @@ int main(int argc, char * argv[])
 
     try
     {
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-        if (vm.count("help")) std::cout << desc << std::endl;
-        boost::program_options::notify(vm);
+        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);        
+        if (vm.count("help"))
+        {
+            std::cout << desc << std::endl;  
+            // TODO return 0;
+        }
+        else
+        {
+            // notify for any errors or anything
+            boost::program_options::notify(vm);
+        }      
     }
     catch (boost::program_options::error& e)
     {
@@ -32,24 +40,61 @@ int main(int argc, char * argv[])
     // ============================= */
     using namespace mrxben001;
 
-    char test[] = "abcdefghijklmnopqrstuvwxyz";
+    char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
+    char redfox[] = "the red fox jumped over the lazy brown dog."; 
+    char lorem[] = "Lorem ipsum";
 
-    bucket_string bstring = bucket_string( test, 10);
+    // ===== TESTS =====
+    /*
+    // CREATE
+    std::cout << "Create new bktstring \"" << alphabet << "\"" <<std::endl;
+    bucket_string bstring( alphabet, 10);
 
     bstring.dbg();
-
-    char test2[] = "johnson";
-
-    bstring.set_content(test2);
-
-    bstring.dbg();
-
+    //------------------------
 
     
+    // SET CONTENT
+    std::cout << "Change its content to \"" << redfox << "\"" <<std::endl;
+    bstring.set_content(redfox);
 
+    bstring.dbg();
+    //------------------------
 
+    // COPY CONSTRUCTOR
+    std::cout << "Copy constructor" <<std::endl;
+    bucket_string bstring2(bstring);
 
+    bstring2.dbg();
+    //------------------------
 
+    // COPY ASSIGNMENT
+    std::cout << "Copy assignment" <<std::endl;
+    bucket_string bstring3;
+    bstring3 = bstring;
+
+    bstring3.dbg();
+    //------------------------
+    
+    // CLEAR CONTENT
+    std::cout << "Clear bucket_string" <<std::endl;
+    bstring.clear();
+
+    bstring.dbg();
+    //------------------------
+
+    std::cout << std::endl << std::endl << std::endl << std::endl << std::endl;
+    
+    bstring.set_content(lorem);
+
+    bstring.dbg();
+    */
+
+    bucket_string one(alphabet);
+
+    bucket_string::iterator * i = one.begin();
+
+    one.dbg();
 
     
     return 0;

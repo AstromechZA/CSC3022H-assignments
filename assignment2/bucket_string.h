@@ -19,11 +19,28 @@ namespace mrxben001
         bucket_string(char * content, int bucket_size);
         ~bucket_string();  
 
+        bucket_string( const bucket_string & other);
+        bucket_string& operator=(const bucket_string& other);
+
+        void clear();
+
         std::size_t length();
 
         void construct(int bucket_size);
         void set_content(char * content);
         void dbg();
+
+
+        class iterator
+        {
+        public:
+            iterator(const bucket& sometarget);
+            bucket& operator*(const iterator& it);
+        private:
+            bucket * target;
+        };
+
+        iterator * begin();
         
     private:
         int bucket_size;

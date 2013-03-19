@@ -15,6 +15,14 @@ namespace mrxben001
         //empty TODO
     }
 
+    bucket::bucket(const bucket & other)
+    {
+        size = other.size;
+        content = new char[strlen(other.content) + 1];
+        strcpy(content, other.content);
+        next = 0;   // no next, this is an isolated bucket
+    }
+
     char * bucket::get_content_unsafe()
     {
         return content;
