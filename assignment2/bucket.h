@@ -18,6 +18,11 @@ namespace mrxben001
             //copy constructor
             bucket(const bucket & other);
 
+            // PREV
+            void set_prev(bucket * n);
+            bucket * get_prev();
+            void delete_prev();
+
             // NEXT
             void set_next(bucket * n);
             bucket * get_next();
@@ -33,7 +38,7 @@ namespace mrxben001
         private:
             char * content;
             int size;
-            
+            bucket * prev;
             bucket * next;
     };
 }

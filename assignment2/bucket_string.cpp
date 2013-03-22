@@ -73,8 +73,9 @@ namespace mrxben001
             {
                 // copy buffer into bucket
                 current->set_content(buffer);
-
-                current->set_next(new bucket(bucket_size));
+                bucket * n = new bucket(bucket_size);
+                current->set_next(n);
+                n->set_prev(current);
                 current = current->get_next();
                 tail = current;
 
@@ -142,7 +143,7 @@ namespace mrxben001
                 // create a copy as the current next
 
                 bucket * thisn = new bucket(*othern);
-
+                thisn->set_prev(current);
                 current->set_next(thisn); 
            
                 current = current->get_next();

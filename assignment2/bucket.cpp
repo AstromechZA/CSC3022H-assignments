@@ -8,6 +8,7 @@ namespace mrxben001
         size = s;
         content = new char[size];
         next = 0;
+        prev = 0;
     }
 
     bucket::~bucket()
@@ -21,6 +22,7 @@ namespace mrxben001
         content = new char[strlen(other.content) + 1];
         strcpy(content, other.content);
         next = 0;   // no next, this is an isolated bucket
+        prev = 0;
     }
 
     char * bucket::get_content_unsafe()
@@ -33,6 +35,17 @@ namespace mrxben001
         content = new char[size];
         std::strcpy(content, src);
     }
+
+    bucket * bucket::get_prev()
+    {
+        return prev;
+    }
+
+    void bucket::set_prev(bucket * p)
+    {
+        prev = p;
+    }
+
 
     bucket * bucket::get_next()
     {
