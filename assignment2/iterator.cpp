@@ -10,7 +10,7 @@ namespace mrxben001
 
     void iterator::operator++()
     {
-        this->operator+=1;
+        this->operator+=(1);
     }
 
     iterator & iterator::operator+=(int i)
@@ -20,6 +20,28 @@ namespace mrxben001
             if (target != 0)
             {                    
                 target = target->next;
+            }
+            else
+            {
+                // something should be thrown or whatever
+            }
+
+        }
+        return *this;
+    }
+
+    void iterator::operator--()
+    {
+        this->operator-=(1);
+    }
+
+    iterator & iterator::operator-=(int i)
+    {
+        for (int j = 0; j < i; ++j)
+        {
+            if (target != 0)
+            {                    
+                target = target->prev;
             }
             else
             {

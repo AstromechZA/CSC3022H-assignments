@@ -99,8 +99,10 @@ int main(int argc, char * argv[])
     (*i)+=1;
     ++(*i);
     bucket * second = **i;
+    --(*i);
+    bucket * third = **i;
 
-    std::cout << first << " " << second << std::endl;
+    std::cout << first << " " << second << " " << third << std::endl;
 
     one.dbg();
 

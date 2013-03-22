@@ -10,8 +10,13 @@ namespace mrxben001
     {
     public:
         iterator(const bucket_string & subjectbs);
+
         void operator++();
         iterator & operator+=(int i);
+
+        void operator--();
+        iterator & operator-=(int i);
+
         bucket * operator *();
     private:
         // the bucketstring this is iterating through
