@@ -1,4 +1,5 @@
 #include "bucket_string.h"
+#include "iterator.h"
 
 namespace mrxben001
 {
@@ -195,7 +196,7 @@ namespace mrxben001
         }
     }
 
-    std::size_t bucket_string::length()
+    std::size_t bucket_string::length() const
     {
         int l = 0;
         bucket * n = head;
@@ -224,14 +225,18 @@ namespace mrxben001
         std::cout << "\\    string length: (" << length() << ")" << std::endl;
     }
 
-    bucket_string::iterator * bucket_string::begin()
-    {
-        return new iterator(head);
-    }
+    //
 
-    bucket_string::iterator::iterator(const bucket& sometarget)
+    //
+
+    //
+
+    //
+
+    iterator * bucket_string::begin()
     {
-        target = sometarget;
+        iterator * i = new iterator(*this);
+        return i;
     }
 
 }

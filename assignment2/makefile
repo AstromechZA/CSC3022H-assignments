@@ -1,4 +1,4 @@
-OBJS = main.o bucket_string.o bucket.o
+OBJS = main.o bucket_string.o bucket.o iterator.o
 CC = g++
 DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
@@ -10,7 +10,7 @@ TARBALL = assignment2.tar.gz
 all: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET) -lboost_program_options
 
-main.o: main.cpp main.h bucket_string.o
+main.o: main.cpp main.h bucket_string.o iterator.o
 	g++ -Wall -c main.cpp 
 
 bucket_string.o: bucket_string.cpp bucket_string.h
@@ -18,6 +18,9 @@ bucket_string.o: bucket_string.cpp bucket_string.h
 
 bucket.o: bucket.cpp bucket.h
 	g++ -Wall -c bucket.cpp
+
+iterator.o: iterator.cpp iterator.h
+	g++ -Wall -c iterator.cpp
 
 
 clean:

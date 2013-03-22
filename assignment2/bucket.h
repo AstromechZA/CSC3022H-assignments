@@ -1,5 +1,5 @@
-#ifndef _BKT_STRING_
-#define _BKT_STRING
+#ifndef _BUCKET_
+#define _BUCKET_
 
 #include <string>
 #include <iostream>
@@ -11,6 +11,7 @@ namespace mrxben001
     class bucket
     {
         public:
+            friend class iterator;
             bucket(int size);
             ~bucket();
 
@@ -32,6 +33,7 @@ namespace mrxben001
         private:
             char * content;
             int size;
+            
             bucket * next;
     };
 }

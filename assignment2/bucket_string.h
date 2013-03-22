@@ -1,18 +1,29 @@
 #ifndef _BKT_STRING_
-#define _BKT_STRING
+#define _BKT_STRING_
 
 #include <string>
 #include <iostream>
 #include <stdio.h>
 
+// THIS IS FINE, has no sub includes
 #include "bucket.h"
 
 namespace mrxben001
 {
+    class iterator;
+}
+
+// THIS IS THE ISSUE
+
+namespace mrxben001
+{
+
     class bucket_string
     {
 
     public:
+        friend class iterator;
+
         bucket_string();
         bucket_string(int bucket_size);
         bucket_string(char * content);
@@ -24,21 +35,11 @@ namespace mrxben001
 
         void clear();
 
-        std::size_t length();
+        std::size_t length() const;
 
         void construct(int bucket_size);
         void set_content(char * content);
         void dbg();
-
-
-        class iterator
-        {
-        public:
-            iterator(const bucket& sometarget);
-            bucket& operator*(const iterator& it);
-        private:
-            bucket * target;
-        };
 
         iterator * begin();
         

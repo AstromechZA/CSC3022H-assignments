@@ -1,6 +1,7 @@
 // Main Class
 
 #include "main.h"
+#include "iterator.h"
 
 int main(int argc, char * argv[])
 {    
@@ -92,7 +93,14 @@ int main(int argc, char * argv[])
 
     bucket_string one(alphabet);
 
-    bucket_string::iterator * i = one.begin();
+    iterator * i = one.begin();
+
+    bucket * first = **i;
+    (*i)+=1;
+    ++(*i);
+    bucket * second = **i;
+
+    std::cout << first << " " << second << std::endl;
 
     one.dbg();
 
