@@ -93,16 +93,18 @@ int main(int argc, char * argv[])
 
     bucket_string one(alphabet);
 
-    iterator * i = one.begin();
+    iterator iter = *one.begin();
 
-    bucket * first = **i;
-    (*i)+=1;
-    ++(*i);
-    bucket * second = **i;
-    --(*i);
-    bucket * third = **i;
-
-    std::cout << first << " " << second << " " << third << std::endl;
+    std::cout << (*iter)->get_content_unsafe() << std::endl;
+    iter+=1;
+    ++iter;
+    std::cout << (*iter)->get_content_unsafe() << std::endl;
+    --iter;
+    std::cout << (*iter)->get_content_unsafe() << std::endl;
+    iter = iter + 1;
+    std::cout << (*iter)->get_content_unsafe() << std::endl;
+    iter = iter - 1;
+    std::cout << (*iter)->get_content_unsafe() << std::endl;
 
     one.dbg();
 

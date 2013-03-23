@@ -9,18 +9,30 @@ namespace mrxben001
     class iterator
     {
     public:
-        iterator(const bucket_string & subjectbs);
+        // SPECIAL MEMBER FUNCTIONS
+        // - CONSTRUCTOR
+        iterator(bucket_string & subjectbs);
+        // - DESTRUCTOR
+        ~iterator();
+        // - COPY CONSTRUCTOR
+        iterator(const iterator& other);
+        // - COPY ASSIGMENT OPERATOR
+        iterator& operator=(const iterator& other);
+
+
 
         void operator++();
         iterator & operator+=(int i);
+        iterator & operator+(int i);
 
         void operator--();
         iterator & operator-=(int i);
+        iterator & operator-(int i);
 
         bucket * operator *();
     private:
         // the bucketstring this is iterating through
-        const bucket_string &subject;
+        bucket_string &subject;
         bucket * target;
     };
 }

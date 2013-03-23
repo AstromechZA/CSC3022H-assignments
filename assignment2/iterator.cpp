@@ -2,11 +2,33 @@
 
 namespace mrxben001
 {
-    iterator::iterator(const bucket_string& subjectbs) : subject(subjectbs)
+    iterator::iterator(bucket_string& subjectbs) : subject(subjectbs)
     {
         target = subject.head;
-
     }  
+
+    iterator::~iterator()
+    {
+        // blank the pointers
+        // DONT destroy them!
+        target = 0;
+        subject = 0;
+    }
+
+    iterator::iterator(const iterator& other) : subject(other.subject)
+    {
+        target = subject.head;
+    }
+
+    iterator& iterator::operator=(const iterator& other)
+    {
+        if (this != &other)
+        {
+            this->subject = bucket_string(other.subject);
+            this->target = this->subject.head;
+        }
+        return *this;
+    }
 
     void iterator::operator++()
     {
@@ -30,6 +52,13 @@ namespace mrxben001
         return *this;
     }
 
+    iterator & iterator::operator+(int i)
+    {
+        iterator * r = this;
+        (*r) += i;
+        return *r;
+    }
+
     void iterator::operator--()
     {
         this->operator-=(1);
@@ -50,6 +79,13 @@ namespace mrxben001
 
         }
         return *this;
+    }
+
+    iterator & iterator::operator-(int i)
+    {
+        iterator * r = this;
+        (*r) -= i;
+        return *r;
     }
 
     bucket * iterator::operator *()
