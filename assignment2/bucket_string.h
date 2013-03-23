@@ -42,6 +42,7 @@ namespace mrxben001
         void dbg();
 
         iterator * begin();
+        iterator * end();
         
     private:
         int bucket_size;

@@ -240,4 +240,13 @@ namespace mrxben001
         return i;
     }
 
+    iterator * bucket_string::end()
+    {
+        iterator * i = new iterator(*this);
+        i->set_target(tail);
+        i->position = (tail->length());
+        return i;
+
+    }
+
 }

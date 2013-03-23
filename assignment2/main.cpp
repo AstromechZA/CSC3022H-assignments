@@ -91,24 +91,54 @@ int main(int argc, char * argv[])
     bstring.dbg();
     */
 
-    bucket_string one(alphabet);
+    bucket_string * one = new bucket_string(alphabet);
+    one->dbg();
 
-    iterator iter = *one.begin();
+    iterator * iter = one->begin();
+    //iter->dbg();
 
-    std::cout << (*iter)->get_content_unsafe() << std::endl;
-    iter+=1;
-    ++iter;
-    std::cout << (*iter)->get_content_unsafe() << std::endl;
-    --iter;
-    std::cout << (*iter)->get_content_unsafe() << std::endl;
-    iter = iter + 1;
-    std::cout << (*iter)->get_content_unsafe() << std::endl;
-    iter = iter - 1;
-    std::cout << (*iter)->get_content_unsafe() << std::endl;
+    iterator * enditer = one->end();
+    //enditer->dbg();
 
-    one.dbg();
+    while( !iter->operator==(*enditer))
+    {
+        //iter->dbg();
+        std::cout << iter->tochar();
+        ++(*iter);
+    }
 
+    std::cout << std::endl;
+
+
+    // std::cout << (*iter)->get_content_unsafe() << std::endl;
+    // iter+=1;
+    // ++iter;
+    // std::cout << (*iter)->get_content_unsafe() << std::endl;
+    // --iter;
+    // std::cout << (*iter)->get_content_unsafe() << std::endl;
+    // iter = iter + 1;
+    // std::cout << (*iter)->get_content_unsafe() << std::endl;
+    // iter = iter - 1;
+    // std::cout << (*iter)->get_content_unsafe() << std::endl;
+
+    // one->dbg();
+
+    // iterator end = *one.end();
+    // std::cout << (*end)->get_content_unsafe() << std::endl;
     
+    // iterator end2 = *one.end();
+    // std::cout << ((*end) == (*end2)) << std::endl;
+    // std::cout << ((*iter) == (*end2)) << std::endl;
+
+    // iterator * begin = one.begin();
+    // begin->dbg();
+
+    // iterator * endoflist = one.end();
+    // endoflist->dbg();
+
+    // std::cout << begin << " " << endoflist << std::endl;
+
+
     return 0;
 }
 
