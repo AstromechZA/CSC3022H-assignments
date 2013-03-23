@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <stdio.h>
+#include <stdexcept>
+
 
 // THIS IS FINE, has no sub includes
 #include "bucket.h"
@@ -26,19 +28,20 @@ namespace mrxben001
 
         bucket_string();
         bucket_string(int bucket_size);
-        bucket_string(char * content);
-        bucket_string(char * content, int bucket_size);
+        bucket_string(const char * content);
+        bucket_string(const char * content, int bucket_size);
         ~bucket_string();  
 
         bucket_string( const bucket_string & other);
         bucket_string& operator=(const bucket_string& other);
+        char & operator[](int index);
 
         void clear();
 
         std::size_t length() const;
 
         void construct(int bucket_size);
-        void set_content(char * content);
+        void set_content(const char * content);
         void dbg();
 
         iterator * begin();

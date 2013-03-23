@@ -14,13 +14,13 @@ namespace mrxben001
         construct(bs); 
     }
 
-    bucket_string::bucket_string(char * content) 
+    bucket_string::bucket_string(const char * content) 
     { 
         construct(7); 
         set_content(content);
     }
 
-    bucket_string::bucket_string(char * content, int bs) 
+    bucket_string::bucket_string(const char * content, int bs) 
     { 
         construct(bs); 
         set_content(content);
@@ -35,7 +35,7 @@ namespace mrxben001
     }
 
     // set content from a char *
-    void bucket_string::set_content(char * content)
+    void bucket_string::set_content(const char * content)
     {
         // bail if head and tail have already been assigned
         if( head || tail )
@@ -55,7 +55,7 @@ namespace mrxben001
         }
 
         // pointer to position like content
-        char * c = content;
+        const char * c = content;
 
         // assign first bucket            
         head = new bucket(bucket_size);
@@ -171,6 +171,22 @@ namespace mrxben001
             this->clear();
         }
         return *this;
+    }
+
+    char & bucket_string::operator[](int index)
+    {
+        bucket * current = head;
+
+        int l = length();
+        int c = index / bucket_size;
+
+        for (int i = 0; i < c; ++i)
+        {
+            current = current->get_next();
+        }
+
+        return current->get_content_unsafe()[index % bucket_size];
+
     }
     
 

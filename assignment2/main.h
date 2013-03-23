@@ -2,6 +2,7 @@
 #define MAIN_H_
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <sstream>
 #include <boost/program_options.hpp>

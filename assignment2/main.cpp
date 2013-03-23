@@ -45,53 +45,23 @@ int main(int argc, char * argv[])
     char redfox[] = "the red fox jumped over the lazy brown dog."; 
     char lorem[] = "Lorem ipsum";
 
-    // ===== TESTS =====
-    /*
-    // CREATE
-    std::cout << "Create new bktstring \"" << alphabet << "\"" <<std::endl;
-    bucket_string bstring( alphabet, 10);
+    std::ifstream filestream (vm["file"].as<std::string>().c_str());
 
-    bstring.dbg();
-    //------------------------
+    std::string line;
 
-    
-    // SET CONTENT
-    std::cout << "Change its content to \"" << redfox << "\"" <<std::endl;
-    bstring.set_content(redfox);
+    if (filestream.is_open())
+    {
+        if ( filestream.good() )
+        {
+            getline (filestream,line);
+        }
+        filestream.close();
+    }
 
-    bstring.dbg();
-    //------------------------
+    const char * lorem2 = line.c_str();
 
-    // COPY CONSTRUCTOR
-    std::cout << "Copy constructor" <<std::endl;
-    bucket_string bstring2(bstring);
 
-    bstring2.dbg();
-    //------------------------
-
-    // COPY ASSIGNMENT
-    std::cout << "Copy assignment" <<std::endl;
-    bucket_string bstring3;
-    bstring3 = bstring;
-
-    bstring3.dbg();
-    //------------------------
-    
-    // CLEAR CONTENT
-    std::cout << "Clear bucket_string" <<std::endl;
-    bstring.clear();
-
-    bstring.dbg();
-    //------------------------
-
-    std::cout << std::endl << std::endl << std::endl << std::endl << std::endl;
-    
-    bstring.set_content(lorem);
-
-    bstring.dbg();
-    */
-
-    bucket_string * one = new bucket_string(alphabet);
+    bucket_string * one = new bucket_string(lorem2,20);
     one->dbg();
 
     iterator * iter = one->begin();
@@ -121,6 +91,10 @@ int main(int argc, char * argv[])
     std::cout << std::endl;
 
     ////////////////////////////////////
+
+    std::cout << (*one)[1] << std::endl;
+    (*one)[4] = '%';
+    one->dbg();
 
     // std::cout << (*iter)->get_content_unsafe() << std::endl;
     // iter+=1;

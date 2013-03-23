@@ -12,6 +12,7 @@ namespace mrxben001
     {
         public:
             friend class iterator;
+
             bucket(int size);
             ~bucket();
 
