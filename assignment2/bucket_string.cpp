@@ -105,6 +105,73 @@ namespace mrxben001
         tail = current;
     }
 
+    // add content from a char *
+    void bucket_string::add_content(const char * content)
+    {
+        // first check 0 length
+        if ( (*content) == '\0')
+        {
+            std::cout << "0-length content" << std::endl;
+            return;
+        }
+
+        // pointer to position like content
+        const char * c = content;
+
+        if (head ==0)
+        {
+            // assign first bucket            
+            head = new bucket(bucket_size);
+            tail = head;
+        }
+
+        // get last bucket
+        bucket * current = tail;        
+
+        char * buffer = new char[bucket_size];
+        std::strcpy(buffer, tail->get_content_unsafe());
+        buffer[bucket_size] = '\0';
+        int offset = std::strlen(tail->get_content_unsafe());
+
+        while( (*c) != '\0')
+        {
+
+            if (offset == bucket_size)
+            {
+                // copy buffer into bucket
+                current->set_content(buffer);
+                bucket * n = new bucket(bucket_size);
+                current->set_next(n);
+                n->set_prev(current);
+                current = current->get_next();
+                tail = current;
+
+                offset = 0;
+            }
+
+            // assign char to bucket
+            buffer[offset] = (*c);
+
+            // move bucket pointer
+            offset++;
+
+            // move char pointer
+            c++;
+        }
+
+        // now we have some random characters left in the buffer
+        //check whether we don't need to fill stuff
+        while(offset < bucket_size)
+        {
+            buffer[offset] = '\0';
+            offset++;
+        }
+
+        // copy buffer into bucket
+        current->set_content(buffer);
+        tail = current;
+    }
+
     // COPY CONSTRUCTOR
     bucket_string::bucket_string( const bucket_string & other)
     {
@@ -177,7 +244,6 @@ namespace mrxben001
     {
         bucket * current = head;
 
-        int l = length();
         int c = index / bucket_size;
 
         for (int i = 0; i < c; ++i)
@@ -189,6 +255,25 @@ namespace mrxben001
 
     }
     
+    std::ostream& operator<<(std::ostream & os, const bucket_string & bs)
+    {
+
+        bucket * bkt = bs.head;
+        while (bkt)
+        {
+            os << bkt->get_content_unsafe();
+            bkt = bkt->get_next();
+        }
+        return os;
+    }
+
+    std::istream& operator>>(std::istream & is, const bucket_string & bs)
+    {
+
+
+        return is;
+    }
+
 
     // DESTRUCTOR
     bucket_string::~bucket_string()

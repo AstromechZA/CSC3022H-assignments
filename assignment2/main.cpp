@@ -96,6 +96,14 @@ int main(int argc, char * argv[])
     (*one)[4] = '%';
     one->dbg();
 
+    one->add_content(alphabet);
+
+    one->dbg();
+
+    std::cout << (*one) << std::endl;
+
+
+
     // std::cout << (*iter)->get_content_unsafe() << std::endl;
     // iter+=1;
     // ++iter;

@@ -36,12 +36,18 @@ namespace mrxben001
         bucket_string& operator=(const bucket_string& other);
         char & operator[](int index);
 
+        friend std::ostream& operator<<(std::ostream & os, const bucket_string & bs);
+        friend std::istream& operator<<(std::istream & is, const bucket_string & bs);
+
         void clear();
 
         std::size_t length() const;
 
         void construct(int bucket_size);
         void set_content(const char * content);
+
+        void add_content(const char * content);
+
         void dbg();
 
         iterator * begin();
