@@ -22,6 +22,7 @@ namespace mrxben001
         iterator& operator=(const iterator& other);
 
         bool operator==(const iterator& other);
+        bool operator!=(const iterator& other);
 
         void operator++();
         iterator & operator+=(int i);

@@ -42,6 +42,14 @@ namespace mrxben001
         return (this->position == other.position);
     }
 
+    bool iterator::operator!=(const iterator& other)
+    {
+
+        if (this->target != other.target) return true;
+        if (this == &other) return false;
+        return (this->position != other.position);
+    }
+
     void iterator::operator++()
     {
         this->operator+=(1);

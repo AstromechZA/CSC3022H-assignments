@@ -10,7 +10,7 @@ TARBALL = assignment2.tar.gz
 all: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET) -lboost_program_options
 
-main.o: main.cpp main.h bucket_string.o iterator.o
+main.o: main.cpp main.h
 	g++ -Wall -c main.cpp 
 
 bucket_string.o: bucket_string.cpp bucket_string.h

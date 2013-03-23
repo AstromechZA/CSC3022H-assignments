@@ -95,20 +95,32 @@ int main(int argc, char * argv[])
     one->dbg();
 
     iterator * iter = one->begin();
-    //iter->dbg();
+    
+    ////////////////////////////////////
 
     iterator * enditer = one->end();
-    //enditer->dbg();
 
-    while( !iter->operator==(*enditer))
+    while( (*iter) != (*enditer))
     {
-        //iter->dbg();
         std::cout << iter->tochar();
         ++(*iter);
     }
 
     std::cout << std::endl;
 
+    ///////////////////////////////////
+
+    iterator * first = one->begin();
+
+    do {
+        --(*iter);
+        std::cout << iter->tochar();        
+    } 
+    while((*iter) != (*first));
+
+    std::cout << std::endl;
+
+    ////////////////////////////////////
 
     // std::cout << (*iter)->get_content_unsafe() << std::endl;
     // iter+=1;
