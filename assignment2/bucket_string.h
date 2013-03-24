@@ -37,7 +37,7 @@ namespace mrxben001
         char & operator[](int index);
 
         friend std::ostream& operator<<(std::ostream & os, const bucket_string & bs);
-        friend std::istream& operator<<(std::istream & is, const bucket_string & bs);
+        friend std::istream& operator>>(std::istream & is, bucket_string & bs);
 
         void clear();
 

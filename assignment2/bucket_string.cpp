@@ -34,6 +34,18 @@ namespace mrxben001
         tail = 0;
     }
 
+    // DESTRUCTOR
+    bucket_string::~bucket_string()
+    {
+        std::cout << "< Deleting bucket_string (" << this << ")" << std::endl;
+        if (head || tail)
+        {
+            head->delete_next();
+            delete head;
+        }
+
+    }
+
     // set content from a char *
     void bucket_string::set_content(const char * content)
     {
@@ -50,7 +62,6 @@ namespace mrxben001
         // first check 0 length
         if ( (*content) == '\0')
         {
-            std::cout << "0-length content" << std::endl;
             return;
         }
 
@@ -111,7 +122,6 @@ namespace mrxben001
         // first check 0 length
         if ( (*content) == '\0')
         {
-            std::cout << "0-length content" << std::endl;
             return;
         }
 
@@ -267,24 +277,82 @@ namespace mrxben001
         return os;
     }
 
-    std::istream& operator>>(std::istream & is, const bucket_string & bs)
+    std::istream& operator>>(std::istream & is, bucket_string & bs)
     {
 
+        // bucket pointers
+        bucket * current = 0;
+
+        //setup temp buffer
+        char * buffer = new char[bs.bucket_size];
+        int offset = 0;
+        buffer[bs.bucket_size] = '\0';
+
+        //if tail has content copy it in
+        if(bs.tail != 0)
+        {
+            std::strcpy(buffer, bs.tail->get_content_unsafe());          
+            offset = std::strlen(bs.tail->get_content_unsafe());   
+            current = bs.tail;     
+        }
+
+        char c;
+        while(is.get(c))
+        {
+
+            if (offset == bs.bucket_size)
+            {
+                if (current == 0)                       // if current == 0, tail == 0 therefore head == 0
+                {
+                    // assign first bucket            
+                    bs.head = new bucket(bs.bucket_size);
+                    bs.tail = bs.head;
+                    current = bs.tail;
+                }
+
+                // copy buffer into bucket
+                current->set_content(buffer);
+                bucket * n = new bucket(bs.bucket_size);
+                current->set_next(n);
+                n->set_prev(current);
+                current = current->get_next();
+                bs.tail = current;
+
+                offset = 0;
+            }
+
+            // assign char to bucket
+            buffer[offset] = c;
+
+            // move bucket pointer
+            offset++;
+        }
+
+        //handler remaining characters
+
+        //fill rest of buffer with nulls
+        while(offset < bs.bucket_size)
+        {
+            buffer[offset] = '\0';
+            offset++;
+        }
+
+        // nodes might not exist at this point
+        if (current == 0)                       // if current == 0, tail == 0 therefore head == 0
+        {
+            // assign first bucket            
+            bs.head = new bucket(bs.bucket_size);
+            bs.tail = bs.head;
+            current = bs.tail;
+        }
+
+        current->set_content(buffer);       
 
         return is;
     }
 
 
-    // DESTRUCTOR
-    bucket_string::~bucket_string()
-    {
-        if (head || tail)
-        {
-            head->delete_next();
-            delete head;
-        }
-
-    }
+    
     
 
     void bucket_string::clear()

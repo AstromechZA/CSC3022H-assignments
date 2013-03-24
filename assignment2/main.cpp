@@ -2,6 +2,159 @@
 
 #include "main.h"
 #include "iterator.h"
+#include "bucket_string.h"
+
+using namespace mrxben001;
+
+// === SOME SHORT TEST STRINGS ========================== */
+char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
+char redfox[] = "the red fox jumped over the lazy brown dog."; 
+char lorem[] = "Lorem ipsum";
+
+void test_bucket_string_construct_destruct()
+{
+    std::cout << "TEST 1: CONSTRUCT/DESTRUCT " << std::endl;
+
+     // Constructor
+    std::cout << "CONSTRUCT bs1" << std::endl;
+    bucket_string * bs1 = new bucket_string(redfox);                         
+    bs1->dbg();                                                             //debug
+
+    // Destructor
+    std::cout << std::endl << "DESTRUCT bs1" << std::endl;
+    delete bs1;                                                             //free this memory
+
+    // Create another (shorter) bucket string, prove that it uses the memory freed
+    // by the destructor previously
+    std::cout << std::endl << "CONSTRUCT bs2 in the freed memory" << std::endl;
+    bucket_string * bs2 = new bucket_string(alphabet);
+    bs2->dbg();
+
+    std::cout << "TEST 1: Passed " << std::endl;
+}
+
+void test_bucket_string_copy_construct()
+{
+    std::cout << "TEST 2: COPY CONSTRUCT " << std::endl;
+
+    std::cout << "CONSTRUCT bs1" << std::endl;
+    bucket_string bs1(redfox);                         
+    bs1.dbg(); 
+
+    std::cout << std::endl;
+
+    std::cout << "CONSTRUCT bs2 ( bucket_string bs2(bs1) )" << std::endl;
+    bucket_string bs2(bs1);                         
+    bs2.dbg(); 
+
+    std::cout << "TEST 2: Passed " << std::endl;
+}
+
+void test_bucket_string_copy_assign()
+{
+    std::cout << "TEST 3: COPY ASSIGN " << std::endl;
+
+    std::cout << "CONSTRUCT bs1" << std::endl;
+    bucket_string bs1(alphabet);                         
+    bs1.dbg(); 
+
+    std::cout << std::endl;
+
+    std::cout << "CONSTRUCT bs2 ( bucket_string bs2 = bs1 )" << std::endl;
+
+    bucket_string bs2 = bs1;             
+
+    bs2.dbg(); 
+
+    std::cout << "TEST 3: Passed " << std::endl;
+}
+
+void test_bucket_string_ostream_insertion()
+{
+    std::cout << "TEST 4: OSTREAM INSERTION " << std::endl;
+
+    std::cout << "CONSTRUCT bs1" << std::endl;
+    bucket_string bs1(redfox);
+    bs1.dbg(); 
+
+    std::cout << "Ouput to std::cout ( std::cout << bs1 << std::endl )" << std::endl;
+
+    std::cout << bs1 << std::endl;
+
+    std::cout << "TEST 4: Passed " << std::endl;
+}
+
+void test_bucket_string_ostream_extraction(const char * filename)
+{
+    std::cout << "TEST 5: ISTREAM EXTRACTION " << std::endl;
+
+    std::cout << "CONSTRUCT blank bs1" << std::endl;
+    bucket_string bs1(20);
+    bs1.dbg();
+
+    std::string temp;
+    std::ifstream file (filename);
+
+    if (file.is_open())
+    {
+        std::cout << "Reading from stream into bs1 ( file >> bs1 ) " << std::endl;
+        file >> bs1;
+        file.close();
+    }
+    else
+    {
+        std::cout << "FILE (" << filename << ")DOES NOT EXIST!" << std::endl;
+        std::cout << "TEST 5: Failed " << std::endl;
+        return;
+    }
+
+    bs1.dbg();
+
+    std::cout << "TEST 5: Passed " << std::endl;
+}
+
+void test_bucket_string_forward_iteration()
+{
+    std::cout << "TEST 6: FORWARD ITERATION " << std::endl;
+
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);                         
+    bs1.dbg(); 
+
+    iterator * current = bs1.begin();
+    iterator * end = bs1.end();
+
+    while ((*current) != (*end))
+    {
+        std::cout << (*current).tochar() << std::endl;
+        ++(*current);
+    }
+
+    std::cout << "TEST 6: Passed" << std::endl;
+}
+
+void test_bucket_string_backward_iteration()
+{
+    std::cout << "TEST 7: BACKWARD ITERATION " << std::endl;
+
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);                         
+    bs1.dbg(); 
+
+    iterator * current = bs1.end();
+    iterator * begin = bs1.begin();
+
+    do
+    {
+        --(*current);
+        std::cout << (*current).tochar() << std::endl;
+    } while ((*current) != (*begin));
+
+    std::cout << "TEST 7: Passed" << std::endl;
+}
+
+
+
 
 int main(int argc, char * argv[])
 {    
@@ -24,7 +177,7 @@ int main(int argc, char * argv[])
         if (vm.count("help"))
         {
             std::cout << desc << std::endl;  
-            // TODO return 0;
+            return 0;
         }
         else
         {
@@ -38,101 +191,34 @@ int main(int argc, char * argv[])
         std::cerr << desc << std::endl; 
         return 1;
     }
-    // ============================= */
-    using namespace mrxben001;
 
-    char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
-    char redfox[] = "the red fox jumped over the lazy brown dog."; 
-    char lorem[] = "Lorem ipsum";
-
-    std::ifstream filestream (vm["file"].as<std::string>().c_str());
-
-    std::string line;
-
-    if (filestream.is_open())
-    {
-        if ( filestream.good() )
-        {
-            getline (filestream,line);
-        }
-        filestream.close();
-    }
-
-    const char * lorem2 = line.c_str();
+    const char * inputfile = vm["file"].as<std::string>().c_str();
 
 
-    bucket_string * one = new bucket_string(lorem2,20);
-    one->dbg();
-
-    iterator * iter = one->begin();
-    
-    ////////////////////////////////////
-
-    iterator * enditer = one->end();
-
-    while( (*iter) != (*enditer))
-    {
-        std::cout << iter->tochar();
-        ++(*iter);
-    }
-
+    test_bucket_string_construct_destruct();
     std::cout << std::endl;
 
-    ///////////////////////////////////
-
-    iterator * first = one->begin();
-
-    do {
-        --(*iter);
-        std::cout << iter->tochar();        
-    } 
-    while((*iter) != (*first));
-
+    test_bucket_string_copy_construct();
     std::cout << std::endl;
 
-    ////////////////////////////////////
-
-    std::cout << (*one)[1] << std::endl;
-    (*one)[4] = '%';
-    one->dbg();
-
-    one->add_content(alphabet);
-
-    one->dbg();
-
-    std::cout << (*one) << std::endl;
+    test_bucket_string_copy_assign();
+    std::cout << std::endl;
 
 
+    test_bucket_string_ostream_insertion();
+    std::cout << std::endl;
 
-    // std::cout << (*iter)->get_content_unsafe() << std::endl;
-    // iter+=1;
-    // ++iter;
-    // std::cout << (*iter)->get_content_unsafe() << std::endl;
-    // --iter;
-    // std::cout << (*iter)->get_content_unsafe() << std::endl;
-    // iter = iter + 1;
-    // std::cout << (*iter)->get_content_unsafe() << std::endl;
-    // iter = iter - 1;
-    // std::cout << (*iter)->get_content_unsafe() << std::endl;
+    test_bucket_string_ostream_extraction(inputfile);
+    std::cout << std::endl;
 
-    // one->dbg();
 
-    // iterator end = *one.end();
-    // std::cout << (*end)->get_content_unsafe() << std::endl;
+    test_bucket_string_forward_iteration();
+    std::cout << std::endl;
+
+    test_bucket_string_backward_iteration();
+    std::cout << std::endl;
+
     
-    // iterator end2 = *one.end();
-    // std::cout << ((*end) == (*end2)) << std::endl;
-    // std::cout << ((*iter) == (*end2)) << std::endl;
-
-    // iterator * begin = one.begin();
-    // begin->dbg();
-
-    // iterator * endoflist = one.end();
-    // endoflist->dbg();
-
-    // std::cout << begin << " " << endoflist << std::endl;
-
-
     return 0;
 }
 
