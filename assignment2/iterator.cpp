@@ -2,9 +2,10 @@
 
 namespace mrxben001
 {
-    iterator::iterator(bucket_string& subjectbs) : subject(subjectbs)
+    iterator::iterator(bucket_string& subjectbs)
     {
-        target = subject.head;
+        subject = &subjectbs;
+        target = (*subject).head;
         index = 0;
     }  
 
@@ -16,9 +17,10 @@ namespace mrxben001
         subject = 0;
     }
 
-    iterator::iterator(const iterator& other) : subject(other.subject)
+    iterator::iterator(const iterator& other)
     {
-        target = subject.head;
+        subject = other.subject;
+        target = other.target;
         index = other.index;
     }
 
@@ -26,8 +28,8 @@ namespace mrxben001
     {
         if (this != &other)
         {
-            this->subject = bucket_string(other.subject);
-            this->target = this->subject.head;
+            this->subject = other.subject;
+            this->target = other.target;
             this->index = other.index;
         }
         return *this;
@@ -37,7 +39,7 @@ namespace mrxben001
     {
         if (this == &other) return true;
 
-        return ((this->target == other.target) && (this->index == other.index));
+        return ((this->subject == other.subject) && (this->index == other.index));
     }
 
     bool iterator::operator!=(const iterator& other) const
@@ -46,18 +48,18 @@ namespace mrxben001
         if (this == &other) return false;
 
         //index
-        return ((&this->subject == &other.subject) && (this->index != other.index));
+        return ((this->subject == other.subject) && (this->index != other.index));
     }
 
     bool iterator::operator<(const iterator& other) const
     {
-        if (&this->subject != &other.subject) return false;
+        if (this->subject != other.subject) return false;
         return (this->index < other.index);
     }
 
     bool iterator::operator>(const iterator& other) const
     {
-        if (&this->subject != &other.subject) return false;
+        if (this->subject != other.subject) return false;
         return (this->index > other.index);
     }
 

@@ -166,13 +166,10 @@ void test_bucket_string_substr()
     iterator * end1 = bs1.begin();
     (*end1)+=10;
 
-    std::cout<< (*end1).tochar() << std::endl;
-
     iterator * end2 = bs1.end();
-    --(*end2);
 
-    // bucket_string bs2 = bs1.substring(*start, *end1);
-    // bs2.dbg();
+    bucket_string bs2 = bs1.substring(*start, *end1);
+    bs2.dbg();
 
     bucket_string bs3 = bs1.substring(*end1, *end2);
     bs3.dbg();

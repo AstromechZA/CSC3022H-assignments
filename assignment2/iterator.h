@@ -43,7 +43,7 @@ namespace mrxben001
     private:
         int offset;
         int index;
-        bucket_string &subject;
+        bucket_string * subject;
         bucket * target;
     };
 }

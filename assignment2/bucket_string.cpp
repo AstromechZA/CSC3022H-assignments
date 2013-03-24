@@ -292,7 +292,6 @@ namespace mrxben001
         //first copy start
         iterator start = s;
 
-        std::cout<< start.tochar() << std::endl;
 
         //get subject bucket_size
         int bs = bucket_size;
