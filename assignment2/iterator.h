@@ -21,8 +21,10 @@ namespace mrxben001
         // - COPY ASSIGMENT OPERATOR
         iterator& operator=(const iterator& other);
 
-        bool operator==(const iterator& other);
-        bool operator!=(const iterator& other);
+        bool operator==(const iterator& other) const;
+        bool operator!=(const iterator& other) const;
+        bool operator>(const iterator& other) const;
+        bool operator<(const iterator& other) const;
 
         void operator++();
         iterator & operator+=(int i);
@@ -33,13 +35,14 @@ namespace mrxben001
         iterator & operator-(int i);
 
         bucket * operator *();
-        char tochar();
+        char tochar() const;
 
         void set_target(bucket * newtarget);
 
-        void dbg();
+        void dbg() const;
     private:
-        int position;
+        int offset;
+        int index;
         bucket_string &subject;
         bucket * target;
     };

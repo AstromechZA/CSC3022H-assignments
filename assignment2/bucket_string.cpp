@@ -116,71 +116,7 @@ namespace mrxben001
         tail = current;
     }
 
-    // add content from a char *
-    void bucket_string::add_content(const char * content)
-    {
-        // first check 0 length
-        if ( (*content) == '\0')
-        {
-            return;
-        }
-
-        // pointer to position like content
-        const char * c = content;
-
-        if (head ==0)
-        {
-            // assign first bucket            
-            head = new bucket(bucket_size);
-            tail = head;
-        }
-
-        // get last bucket
-        bucket * current = tail;        
-
-        char * buffer = new char[bucket_size];
-        std::strcpy(buffer, tail->get_content_unsafe());
-        buffer[bucket_size] = '\0';
-        int offset = std::strlen(tail->get_content_unsafe());
-
-        while( (*c) != '\0')
-        {
-
-            if (offset == bucket_size)
-            {
-                // copy buffer into bucket
-                current->set_content(buffer);
-                bucket * n = new bucket(bucket_size);
-                current->set_next(n);
-                n->set_prev(current);
-                current = current->get_next();
-                tail = current;
-
-                offset = 0;
-            }
-
-            // assign char to bucket
-            buffer[offset] = (*c);
-
-            // move bucket pointer
-            offset++;
-
-            // move char pointer
-            c++;
-        }
-
-        // now we have some random characters left in the buffer
-        //check whether we don't need to fill stuff
-        while(offset < bucket_size)
-        {
-            buffer[offset] = '\0';
-            offset++;
-        }
-
-        // copy buffer into bucket
-        current->set_content(buffer);
-        tail = current;
-    }
+    
 
     // COPY CONSTRUCTOR
     bucket_string::bucket_string( const bucket_string & other)
@@ -351,7 +287,65 @@ namespace mrxben001
         return is;
     }
 
+    bucket_string& bucket_string::substring(const iterator& s, const iterator& e)
+    {
+        //first copy start
+        iterator start = s;
 
+        std::cout<< start.tochar() << std::endl;
+
+        //get subject bucket_size
+        int bs = bucket_size;
+
+        //create new bucket string
+        bucket_string * b = new bucket_string(bs);
+
+        // return empty if the iterators don't span anything
+        if (start < e)
+        {
+            b->head = new bucket(bs);
+            bucket * current = b->head;
+
+            char * buffer = new char[bs];
+            buffer[bs] = '\0';
+            int _offset = 0;
+
+            while (start != e)
+            {
+
+                if (_offset == bs)
+                {
+                    current->set_content(buffer);
+                    bucket * n = new bucket(bs);
+                    current->set_next(n);
+                    n->set_prev(current);
+                    current = current->get_next();
+                    _offset = 0;
+                }
+
+                buffer[_offset] = start.tochar();
+                _offset++;
+                ++start;
+            }
+
+
+            while(_offset < bs)
+            {
+                buffer[_offset] = '\0';
+                _offset++;
+            }
+
+            current->set_content(buffer);
+            b->tail = current;
+
+        }
+
+
+        return *b;
+
+
+
+    }
     
     
 
@@ -413,7 +407,7 @@ namespace mrxben001
     {
         iterator * i = new iterator(*this);
         i->set_target(tail);
-        i->position = (tail->length());
+        i->index = this->length();
         return i;
 
     }

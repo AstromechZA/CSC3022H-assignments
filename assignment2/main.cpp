@@ -153,6 +153,32 @@ void test_bucket_string_backward_iteration()
     std::cout << "TEST 7: Passed" << std::endl;
 }
 
+void test_bucket_string_substr()
+{
+    std::cout << "TEST 8: SUBSTRING " << std::endl;
+
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);                         
+    bs1.dbg(); 
+
+    iterator * start = bs1.begin();
+
+    iterator * end1 = bs1.begin();
+    (*end1)+=10;
+
+    std::cout<< (*end1).tochar() << std::endl;
+
+    iterator * end2 = bs1.end();
+    --(*end2);
+
+    // bucket_string bs2 = bs1.substring(*start, *end1);
+    // bs2.dbg();
+
+    bucket_string bs3 = bs1.substring(*end1, *end2);
+    bs3.dbg();
+
+    std::cout << "TEST 8: Passed " << std::endl;
+}
 
 
 
@@ -205,6 +231,7 @@ int main(int argc, char * argv[])
     std::cout << std::endl;
 
 
+
     test_bucket_string_ostream_insertion();
     std::cout << std::endl;
 
@@ -212,11 +239,19 @@ int main(int argc, char * argv[])
     std::cout << std::endl;
 
 
+
     test_bucket_string_forward_iteration();
     std::cout << std::endl;
 
     test_bucket_string_backward_iteration();
     std::cout << std::endl;
+
+
+
+    test_bucket_string_substr();
+    std::cout << std::endl;
+
+
 
     
     return 0;

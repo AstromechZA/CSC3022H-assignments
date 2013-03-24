@@ -5,7 +5,7 @@ namespace mrxben001
     iterator::iterator(bucket_string& subjectbs) : subject(subjectbs)
     {
         target = subject.head;
-        position = 0;
+        index = 0;
     }  
 
     iterator::~iterator()
@@ -19,7 +19,7 @@ namespace mrxben001
     iterator::iterator(const iterator& other) : subject(other.subject)
     {
         target = subject.head;
-        position = other.position;
+        index = other.index;
     }
 
     iterator& iterator::operator=(const iterator& other)
@@ -28,26 +28,37 @@ namespace mrxben001
         {
             this->subject = bucket_string(other.subject);
             this->target = this->subject.head;
-            this->position = other.position;
+            this->index = other.index;
         }
         return *this;
     }
 
-    bool iterator::operator==(const iterator& other)
+    bool iterator::operator==(const iterator& other) const
     {
         if (this == &other) return true;
 
-        if (this->target != other.target) return false;
-
-        return (this->position == other.position);
+        return ((this->target == other.target) && (this->index == other.index));
     }
 
-    bool iterator::operator!=(const iterator& other)
+    bool iterator::operator!=(const iterator& other) const
     {
-
-        if (this->target != other.target) return true;
+        //same object
         if (this == &other) return false;
-        return (this->position != other.position);
+
+        //index
+        return ((&this->subject == &other.subject) && (this->index != other.index));
+    }
+
+    bool iterator::operator<(const iterator& other) const
+    {
+        if (&this->subject != &other.subject) return false;
+        return (this->index < other.index);
+    }
+
+    bool iterator::operator>(const iterator& other) const
+    {
+        if (&this->subject != &other.subject) return false;
+        return (this->index > other.index);
     }
 
     void iterator::operator++()
@@ -59,34 +70,22 @@ namespace mrxben001
     {
         for (int j = 0; j < i; ++j)
         {
+            int mpos = index % target->size;    //offset in buffer
 
-            // if past the end of the bucket
-            if ((position+1)==target->size)
-            {
-                position+=1;
+            index+=1;
 
-                // check whether a next bucket exists
-                if (target->next != 0)
-                {                    
-                    target = target->next;
-                    position = 0;
-                }
-                else
+            // am i at the end of a bucket?
+            if( (mpos+1) == (int)std::strlen(target->content) )
+            {   
+                if(target->next == 0)
                 {
                     break;
                 }
+                else
+                {
+                    target = target->next;
+                }
             }
-            else if ((position+1)==(int)std::strlen(target->content))
-            {
-                position+=1;
-                break;
-            }
-            else
-            {
-                position+=1;
-            }
-            
-
         }
         return *this;
     }
@@ -107,26 +106,16 @@ namespace mrxben001
     {
         for (int j = 0; j < i; ++j)
         {
-            if (position <= 0)
+            if (index > 0)
             {
-                if (target->prev != 0)
+                index-=1;
+
+                if ( (index % target->size) == (target->size-1) )
                 {
                     target = target->prev;
-                    position = target->size-1;
-                }
-                else
-                {
-                    position = -1;
-                    break;
                 }
 
             }
-            else
-            {
-                position-=1;
-            }
-
-
 
         }
         return *this;
@@ -144,13 +133,14 @@ namespace mrxben001
         return target;
     }
 
-    char iterator::tochar()
+    char iterator::tochar() const
     {
-        if (position >= (int)std::strlen(target->content))
+        int mod = index % target->size;
+        if (mod >= (int)std::strlen(target->content))
         {
             return '?';
         }
-        return target->content[position];
+        return target->content[mod];
     }
 
     void iterator::set_target(bucket * newtarget)
@@ -158,13 +148,13 @@ namespace mrxben001
         target = newtarget;
     }
 
-    void iterator::dbg()
+    void iterator::dbg() const
     {
         std::cout << "/ iterator " << this << std::endl;
 
         std::cout << "| using bucket_string " << &subject << std::endl;
-        std::cout << "| pointing at bucket " << target << "[" << position << "]" << this->tochar() << std::endl;
-
+        std::cout << "| pointing at bucket " << target << std::endl;
+        std::cout << "| " << &subject << "[" << index << "]" << this->tochar() << std::endl;
         std::cout << "\\" << std::endl;
     }
 }

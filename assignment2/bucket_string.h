@@ -46,7 +46,8 @@ namespace mrxben001
         void construct(int bucket_size);
         void set_content(const char * content);
 
-        void add_content(const char * content);
+
+        bucket_string& substring(const iterator& start, const iterator& end);
 
         void dbg();
 
