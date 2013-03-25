@@ -41,7 +41,6 @@ namespace mrxben001
 
         void dbg() const;
     private:
-        int offset;
         int index;
         bucket_string * subject;
         bucket * target;

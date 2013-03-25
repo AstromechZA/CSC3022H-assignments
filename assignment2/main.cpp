@@ -166,17 +166,37 @@ void test_bucket_string_substr()
     iterator * end1 = bs1.begin();
     (*end1)+=10;
 
-    iterator * end2 = bs1.end();
-
+    std::cout << "SUBSTRING begin : 10" << std::endl;
     bucket_string bs2 = bs1.substring(*start, *end1);
     bs2.dbg();
 
+
+    iterator * end2 = bs1.end();
+
+    std::cout << "SUBSTRING 10 : end" << std::endl;
     bucket_string bs3 = bs1.substring(*end1, *end2);
     bs3.dbg();
 
     std::cout << "TEST 8: Passed " << std::endl;
 }
 
+void test_bucket_string_char_append()
+{
+    std::cout << "TEST 9: CHAR * APPEND " << std::endl;
+
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);                         
+    bs1.dbg(); 
+
+    bs1+=redfox;
+
+    bs1.dbg(); 
+
+    bucket_string bs2 = bs1 + alphabet;
+    bs2.dbg();
+
+    std::cout << "TEST 9: Passed " << std::endl;
+}
 
 
 int main(int argc, char * argv[])
@@ -248,6 +268,8 @@ int main(int argc, char * argv[])
     test_bucket_string_substr();
     std::cout << std::endl;
 
+    test_bucket_string_char_append();
+    std::cout << std::endl;
 
 
     

@@ -186,6 +186,88 @@ namespace mrxben001
         return *this;
     }
 
+    bucket_string& bucket_string::operator+=(const char * morecontent)
+    {
+        // first check morecontent length
+        if ( (*morecontent) == '\0')
+        {
+            return *this;
+        }
+
+        // pointer to position like morecontent
+        const char * c = morecontent;
+        char * buffer = new char[bucket_size];
+        buffer[bucket_size] = '\0';
+        int offset = 0;
+
+        // if no tail exists, create tail and head
+        if (tail == 0)
+        {
+            head = new bucket(bucket_size);
+            tail = head;
+        }
+        else
+        {
+            //copy existing content into buffer
+            std::strcpy(buffer, tail->get_content_unsafe());
+
+            //set offset to correct position in buffer
+            offset = std::strlen(tail->get_content_unsafe());
+        }
+
+        // current points at tail
+        bucket * current = tail;
+
+        while( (*c) != '\0')
+        {
+
+            if (offset == bucket_size)
+            {
+                // copy buffer into bucket
+                current->set_content(buffer);
+                bucket * n = new bucket(bucket_size);
+                current->set_next(n);
+                n->set_prev(current);
+                current = current->get_next();
+                tail = current;
+
+                offset = 0;
+            }
+
+            // assign char to bucket
+            buffer[offset] = (*c);
+
+            // move bucket pointer
+            offset++;
+
+            // move char pointer
+            c++;
+        }
+
+        // now we have some random characters left in the buffer
+        //check whether we don't need to fill stuff
+        while(offset < bucket_size)
+        {
+            buffer[offset] = '\0';
+            offset++;
+        }
+
+        // copy buffer into bucket
+        current->set_content(buffer);
+        tail = current;
+
+
+
+        return *this;
+    }
+
+    bucket_string& bucket_string::operator+(const char * morecontent)
+    {
+        bucket_string * temp = this;
+        (*temp)+=morecontent;
+        return *temp;
+    }
+
     char & bucket_string::operator[](int index)
     {
         bucket * current = head;
@@ -341,9 +423,6 @@ namespace mrxben001
 
 
         return *b;
-
-
-
     }
     
     
@@ -353,7 +432,7 @@ namespace mrxben001
         if( head || tail )
         {
             head->delete_next();
-
+            delete head;
             head = 0;
             tail = 0;
         }

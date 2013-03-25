@@ -34,6 +34,8 @@ namespace mrxben001
 
         bucket_string( const bucket_string & other);
         bucket_string& operator=(const bucket_string& other);
+        bucket_string& operator+=(const char * morecontent);        
+        bucket_string& operator+(const char * morecontent);
         char & operator[](int index);
 
         friend std::ostream& operator<<(std::ostream & os, const bucket_string & bs);
