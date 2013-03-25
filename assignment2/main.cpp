@@ -204,17 +204,38 @@ void test_bucket_string_insert()
     std::cout << "TEST 10: INSERT" << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
-    bucket_string bs1(alphabet);           
+    bucket_string bs1(alphabet);    
+    bs1.dbg();
+
+    std::cout << "CONSTRUCT bs2 with lorem ipsum" << std::endl;
     bucket_string bs2(lorem);  
 
-    iterator * something = bs1.begin();
-    (*something)+=10;
-
-    bucket_string bs3 = bs1.insert(*something, bs2);
+    std::cout << "INSERT bs2 into bs1 at begin+10" << std::endl;
+    bucket_string bs3 = bs1.insert((*bs1.begin())+10, bs2);
 
     bs3.dbg();
 
     std::cout << "TEST 10: Passed " << std::endl;
+}
+
+void test_bucket_string_replace()
+{
+    std::cout << "TEST 11: REPLACE" << std::endl;
+
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);    
+    bs1.dbg();
+
+    bucket_string bs2(redfox);
+
+    iterator from = (*bs1.begin()) + 3;
+    iterator to = (*bs1.begin()) + 20;
+
+    bucket_string bs3 = bs1.replace(from, to, bs2);
+
+    bs3.dbg();
+
+    std::cout << "TEST 11: Passed " << std::endl;
 }
 
 
@@ -293,6 +314,8 @@ int main(int argc, char * argv[])
     test_bucket_string_insert();
     std::cout << std::endl;
 
+    test_bucket_string_replace();
+    std::cout << std::endl;
     
     return 0;
 }

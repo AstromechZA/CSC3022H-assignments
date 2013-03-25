@@ -4,29 +4,12 @@
 namespace mrxben001
 {
     // CONSTRUCTORS
-    bucket_string::bucket_string() 
-    { 
-        construct(7); 
-    }
+    bucket_string::bucket_string() { construct(7);  }
+    bucket_string::bucket_string(int bs) { construct(bs);  }
+    bucket_string::bucket_string(const char * content) { construct(7);  set_content(content); }
+    bucket_string::bucket_string(const char * content, int bs) { construct(bs); set_content(content); }
 
-    bucket_string::bucket_string(int bs) 
-    { 
-        construct(bs); 
-    }
-
-    bucket_string::bucket_string(const char * content) 
-    { 
-        construct(7); 
-        set_content(content);
-    }
-
-    bucket_string::bucket_string(const char * content, int bs) 
-    { 
-        construct(bs); 
-        set_content(content);
-    }
-
-    // actual constructor to set the sizes and stuff
+    // actual constructor to set the sizes and blank pointer
     void bucket_string::construct(int bs)
     {
         bucket_size = bs;
@@ -37,13 +20,13 @@ namespace mrxben001
     // DESTRUCTOR
     bucket_string::~bucket_string()
     {
+        //debug line
         std::cout << "< Deleting bucket_string (" << this << ")" << std::endl;
         if (head || tail)
         {
             head->delete_next();
             delete head;
         }
-
     }
 
     // set content from a char *
@@ -60,10 +43,7 @@ namespace mrxben001
         } 
 
         // first check 0 length
-        if ( (*content) == '\0')
-        {
-            return;
-        }
+        if ( (*content) == '\0') return;
 
         // pointer to position like content
         const char * c = content;
@@ -166,6 +146,7 @@ namespace mrxben001
                 tail = current;
             }
 
+            tail = current;
 
         }
     }
@@ -189,11 +170,8 @@ namespace mrxben001
     bucket_string& bucket_string::operator+=(const char * morecontent)
     {
         // first check morecontent length
-        if ( (*morecontent) == '\0')
-        {
-            return *this;
-        }
-
+        if ( (*morecontent) == '\0') return *this;
+        
         // pointer to position like morecontent
         const char * c = morecontent;
         char * buffer = new char[bucket_size];
@@ -273,7 +251,6 @@ namespace mrxben001
 
     bucket_string& bucket_string::operator+=(bucket_string& other)
     {
-
         // 0 length
         if ( other.length() == 0)
         {
@@ -296,7 +273,7 @@ namespace mrxben001
             std::strcpy(buffer, tail->get_content_unsafe());
 
             //set offset to correct position in buffer
-            offset = std::strlen(tail->get_content_unsafe());
+            offset = (int)std::strlen(tail->get_content_unsafe());
         }
 
         bucket * current = tail;
@@ -305,7 +282,7 @@ namespace mrxben001
         iterator * begin = other.begin();
         iterator * end = other.end();
 
-        while (*begin != *end)
+        while ((*begin) != (*end))
         {
             char c = begin->tochar();
 
@@ -457,7 +434,8 @@ namespace mrxben001
             current = bs.tail;
         }
 
-        current->set_content(buffer);       
+        current->set_content(buffer);   
+
 
         return is;
     }
@@ -520,19 +498,23 @@ namespace mrxben001
     
     bucket_string& bucket_string::insert(const iterator& position, bucket_string& bs)
     {
-        iterator * beginning = this->begin();
+        return this->replace(position, position,  bs);
+    }
 
+    // REPLACE a range with content from another bucketstring
+    bucket_string& bucket_string::replace(const iterator& from, const iterator& to, bucket_string& bs)
+    {
+        // ends
+        iterator * beginning = this->begin();
         iterator * end = this->end();
 
-        bucket_string * left = &this->substring(*beginning, position);
+        //left and right parts
+        bucket_string * left = &this->substring(*beginning, from);
+        bucket_string * right = &this->substring(to, *end);
 
-        bucket_string * right = &this->substring(position, *end);
-
+        //pull together again
         bucket_string * out = &((*left) + bs + (*right));
         return *out;
-
-
-
     }
 
     void bucket_string::clear()
