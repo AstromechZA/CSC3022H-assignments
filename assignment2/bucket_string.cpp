@@ -330,7 +330,7 @@ namespace mrxben001
             ++(*begin);
         }
 
-        
+
         // now we have some random characters left in the buffer
         //check whether we don't need to fill stuff
         while(offset < bucket_size)
@@ -518,7 +518,22 @@ namespace mrxben001
         return *b;
     }
     
-    
+    bucket_string& bucket_string::insert(const iterator& position, bucket_string& bs)
+    {
+        iterator * beginning = this->begin();
+
+        iterator * end = this->end();
+
+        bucket_string * left = &this->substring(*beginning, position);
+
+        bucket_string * right = &this->substring(position, *end);
+
+        bucket_string * out = &((*left) + bs + (*right));
+        return *out;
+
+
+
+    }
 
     void bucket_string::clear()
     {

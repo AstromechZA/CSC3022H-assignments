@@ -56,6 +56,7 @@ namespace mrxben001
 
 
         bucket_string& substring(const iterator& start, const iterator& end);
+        bucket_string& insert(const iterator& position, bucket_string& bs);
 
         void dbg();
 

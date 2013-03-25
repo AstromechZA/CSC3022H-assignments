@@ -199,6 +199,24 @@ void test_bucket_string_char_append()
     std::cout << "TEST 9: Passed " << std::endl;
 }
 
+void test_bucket_string_insert()
+{
+    std::cout << "TEST 10: INSERT" << std::endl;
+
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);           
+    bucket_string bs2(lorem);  
+
+    iterator * something = bs1.begin();
+    (*something)+=10;
+
+    bucket_string bs3 = bs1.insert(*something, bs2);
+
+    bs3.dbg();
+
+    std::cout << "TEST 10: Passed " << std::endl;
+}
+
 
 int main(int argc, char * argv[])
 {    
@@ -272,6 +290,8 @@ int main(int argc, char * argv[])
     test_bucket_string_char_append();
     std::cout << std::endl;
 
+    test_bucket_string_insert();
+    std::cout << std::endl;
 
     
     return 0;
