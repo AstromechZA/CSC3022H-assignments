@@ -185,14 +185,15 @@ void test_bucket_string_char_append()
     std::cout << "TEST 9: CHAR * APPEND " << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
-    bucket_string bs1(alphabet);                         
+    bucket_string bs1;                         
     bs1.dbg(); 
 
     bs1+=redfox;
 
     bs1.dbg(); 
 
-    bucket_string bs2 = bs1 + alphabet;
+    bucket_string bs2 = bs1 + alphabet + bs1;
+
     bs2.dbg();
 
     std::cout << "TEST 9: Passed " << std::endl;

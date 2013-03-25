@@ -263,7 +263,7 @@ namespace mrxben001
 
     bucket_string& bucket_string::operator+(const char * morecontent)
     {
-        bucket_string * temp = this;
+        bucket_string * temp = new bucket_string(*this);
         (*temp)+=morecontent;
         return *temp;
     }
@@ -271,8 +271,9 @@ namespace mrxben001
 
 
 
-    bucket_string& bucket_string::operator+=(const bucket_string& other)
+    bucket_string& bucket_string::operator+=(bucket_string& other)
     {
+
         // 0 length
         if ( other.length() == 0)
         {
@@ -298,15 +299,50 @@ namespace mrxben001
             offset = std::strlen(tail->get_content_unsafe());
         }
 
-        // create iterators
-        iterator begin = *other.begin();
-        iterator end = *other.end();
+        bucket * current = tail;
 
-        while (begin != end)
+        // create iterators
+        iterator * begin = other.begin();
+        iterator * end = other.end();
+
+        while (*begin != *end)
         {
-            std::cout << begin.tochar() << std::endl;
-            ++begin;
+            char c = begin->tochar();
+
+            if (offset == bucket_size)
+            {
+                // copy buffer into bucket
+                current->set_content(buffer);
+                bucket * n = new bucket(bucket_size);
+                current->set_next(n);
+                n->set_prev(current);
+                current = current->get_next();
+                tail = current;
+
+                offset = 0;
+            }
+
+            // assign char to bucket
+            buffer[offset] = c;
+
+            // move bucket pointer
+            offset++;
+            ++(*begin);
         }
+
+        
+        // now we have some random characters left in the buffer
+        //check whether we don't need to fill stuff
+        while(offset < bucket_size)
+        {
+            buffer[offset] = '\0';
+            offset++;
+        }
+
+        // copy buffer into bucket
+        current->set_content(buffer);
+        tail = current;
+
 
 
 
@@ -315,9 +351,9 @@ namespace mrxben001
     }
 
 
-    bucket_string& bucket_string::operator+(const bucket_string& other)
+    bucket_string& bucket_string::operator+(bucket_string& other)
     {
-        bucket_string * temp = this;
+        bucket_string * temp = new bucket_string(*this);
         (*temp)+=other;
         return *temp;
     }

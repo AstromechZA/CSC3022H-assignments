@@ -36,8 +36,8 @@ namespace mrxben001
         bucket_string& operator=(const bucket_string& other);
         bucket_string& operator+=(const char * morecontent);        
         bucket_string& operator+(const char * morecontent);
-        bucket_string& operator+=(const bucket_string& other);        
-        bucket_string& operator+(const bucket_string& other);
+        bucket_string& operator+=(bucket_string& other);        
+        bucket_string& operator+(bucket_string& other);
 
 
 
