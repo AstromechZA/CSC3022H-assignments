@@ -268,6 +268,63 @@ namespace mrxben001
         return *temp;
     }
 
+
+
+
+    bucket_string& bucket_string::operator+=(const bucket_string& other)
+    {
+        // 0 length
+        if ( other.length() == 0)
+        {
+            return *this;
+        }
+
+        char * buffer = new char[bucket_size];
+        buffer[bucket_size] = '\0';
+        int offset = 0;
+
+        // if no tail exists, create tail and head
+        if (tail == 0)
+        {
+            head = new bucket(bucket_size);
+            tail = head;
+        }
+        else
+        {
+            //copy existing content into buffer
+            std::strcpy(buffer, tail->get_content_unsafe());
+
+            //set offset to correct position in buffer
+            offset = std::strlen(tail->get_content_unsafe());
+        }
+
+        // create iterators
+        iterator begin = *other.begin();
+        iterator end = *other.end();
+
+        while (begin != end)
+        {
+            std::cout << begin.tochar() << std::endl;
+            ++begin;
+        }
+
+
+
+
+        return *this;
+    }
+
+
+    bucket_string& bucket_string::operator+(const bucket_string& other)
+    {
+        bucket_string * temp = this;
+        (*temp)+=other;
+        return *temp;
+    }
+
+
+
+
     char & bucket_string::operator[](int index)
     {
         bucket * current = head;
