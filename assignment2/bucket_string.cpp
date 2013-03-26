@@ -21,7 +21,7 @@ namespace mrxben001
     bucket_string::~bucket_string()
     {
         //debug line
-        std::cout << "< Deleting bucket_string (" << this << ")" << std::endl;
+        //std::cout << "< Deleting bucket_string (" << this << ")" << std::endl;
         if (head || tail)
         {
             head->delete_next();
@@ -156,13 +156,54 @@ namespace mrxben001
     {
         if (this != &other)
         {
+                // copy size int
             bucket_size = other.bucket_size;
-            head = 0;
-            tail = 0;
+
+            //initial
+            if(other.head == 0)
+            {
+                head = 0;
+                tail = 0;
+            }
+            else
+            {
+                //copy the head node
+                head = new bucket(*other.head);
+
+                //current pointers
+                bucket * current = head;
+                bucket * othercurrent = other.head;
+                
+                //while other current still has nodes
+                while(current)
+                {
+                    // get the othernext node
+                    bucket * othern = othercurrent->get_next();
+
+                    // set the othercurrent
+                    othercurrent = othern;
+
+                    if (othercurrent == 0)
+                    {
+                        break;
+                    }
+
+                    // create a copy as the current next
+
+                    bucket * thisn = new bucket(*othern);
+                    thisn->set_prev(current);
+                    current->set_next(thisn); 
+               
+                    current = current->get_next();
 
 
+                    // update tail
+                    tail = current;
+                }
 
-            this->clear();
+                tail = current;
+
+            }
         }
         return *this;
     }
@@ -171,7 +212,7 @@ namespace mrxben001
     {
         // first check morecontent length
         if ( (*morecontent) == '\0') return *this;
-        
+
         // pointer to position like morecontent
         const char * c = morecontent;
         char * buffer = new char[bucket_size];
@@ -234,7 +275,7 @@ namespace mrxben001
         current->set_content(buffer);
         tail = current;
 
-
+        delete buffer;
 
         return *this;
     }
@@ -321,7 +362,9 @@ namespace mrxben001
         tail = current;
 
 
-
+        delete buffer;
+        delete begin;
+        delete end;
 
 
         return *this;
@@ -436,7 +479,7 @@ namespace mrxben001
 
         current->set_content(buffer);   
 
-
+        delete buffer;
         return is;
     }
 
@@ -490,6 +533,7 @@ namespace mrxben001
             current->set_content(buffer);
             b->tail = current;
 
+            delete buffer;
         }
 
 
@@ -513,7 +557,15 @@ namespace mrxben001
         bucket_string * right = &this->substring(to, *end);
 
         //pull together again
-        bucket_string * out = &((*left) + bs + (*right));
+        bucket_string * leftandcontent = &((*left) + bs);
+        bucket_string * out = &(*leftandcontent + *right);
+
+        delete beginning;
+        delete end;
+        delete left;
+        delete right;
+        delete leftandcontent;
+
         return *out;
     }
 
@@ -556,14 +608,6 @@ namespace mrxben001
         std::cout << "|    tail bucket: " << tail << std::endl;
         std::cout << "\\    string length: (" << length() << ")" << std::endl;
     }
-
-    //
-
-    //
-
-    //
-
-    //
 
     iterator * bucket_string::begin()
     {

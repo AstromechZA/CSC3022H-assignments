@@ -94,7 +94,7 @@ namespace mrxben001
 
     iterator & iterator::operator+(int i)
     {
-        iterator * r = this;
+        iterator * r = new iterator(*this);
         (*r) += i;
         return *r;
     }
@@ -125,7 +125,7 @@ namespace mrxben001
 
     iterator & iterator::operator-(int i)
     {
-        iterator * r = this;
+        iterator * r = new iterator(*this);
         (*r) -= i;
         return *r;
     }

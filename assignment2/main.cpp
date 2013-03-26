@@ -13,7 +13,7 @@ char lorem[] = "Lorem ipsum";
 
 void test_bucket_string_construct_destruct()
 {
-    std::cout << "TEST 1: CONSTRUCT/DESTRUCT " << std::endl;
+    std::cout << "TEST: CONSTRUCT/DESTRUCT " << std::endl;
 
      // Constructor
     std::cout << "CONSTRUCT bs1" << std::endl;
@@ -27,15 +27,16 @@ void test_bucket_string_construct_destruct()
     // Create another (shorter) bucket string, prove that it uses the memory freed
     // by the destructor previously
     std::cout << std::endl << "CONSTRUCT bs2 in the freed memory" << std::endl;
-    bucket_string * bs2 = new bucket_string(alphabet);
+    bucket_string * bs2 = new bucket_string(alphabet, 10);
     bs2->dbg();
 
-    std::cout << "TEST 1: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
+    delete bs2;
 }
 
 void test_bucket_string_copy_construct()
 {
-    std::cout << "TEST 2: COPY CONSTRUCT " << std::endl;
+    std::cout << "TEST: COPY CONSTRUCT " << std::endl;
 
     std::cout << "CONSTRUCT bs1" << std::endl;
     bucket_string bs1(redfox);                         
@@ -43,50 +44,49 @@ void test_bucket_string_copy_construct()
 
     std::cout << std::endl;
 
-    std::cout << "CONSTRUCT bs2 ( bucket_string bs2(bs1) )" << std::endl;
+    std::cout << "CONSTRUCT bs2 ( bucket_string bs2(bs1); )" << std::endl;
     bucket_string bs2(bs1);                         
     bs2.dbg(); 
 
-    std::cout << "TEST 2: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
 }
 
 void test_bucket_string_copy_assign()
 {
-    std::cout << "TEST 3: COPY ASSIGN " << std::endl;
+    std::cout << "TEST: ASSIGNMENT " << std::endl;
 
-    std::cout << "CONSTRUCT bs1" << std::endl;
-    bucket_string bs1(alphabet);                         
+    std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
+    bucket_string bs1(alphabet);          
+
+    std::cout << "CONSTRUCT bs2 with redfox" << std::endl;
+    bucket_string bs2(redfox);
+
+    std::cout << "ASSIGN bs2 to bs1 ( bs1 = bs2; )" << std::endl;
+    bs1 = bs2;            
+
     bs1.dbg(); 
 
-    std::cout << std::endl;
-
-    std::cout << "CONSTRUCT bs2 ( bucket_string bs2 = bs1 )" << std::endl;
-
-    bucket_string bs2 = bs1;             
-
-    bs2.dbg(); 
-
-    std::cout << "TEST 3: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
 }
 
 void test_bucket_string_ostream_insertion()
 {
-    std::cout << "TEST 4: OSTREAM INSERTION " << std::endl;
+    std::cout << "TEST: OSTREAM INSERTION " << std::endl;
 
     std::cout << "CONSTRUCT bs1" << std::endl;
     bucket_string bs1(redfox);
     bs1.dbg(); 
 
-    std::cout << "Ouput to std::cout ( std::cout << bs1 << std::endl )" << std::endl;
+    std::cout << "Ouput to std::cout ( std::cout << bs1 << std::endl; )" << std::endl;
 
     std::cout << bs1 << std::endl;
 
-    std::cout << "TEST 4: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
 }
 
 void test_bucket_string_ostream_extraction(const char * filename)
 {
-    std::cout << "TEST 5: ISTREAM EXTRACTION " << std::endl;
+    std::cout << "TEST: ISTREAM EXTRACTION " << std::endl;
 
     std::cout << "CONSTRUCT blank bs1" << std::endl;
     bucket_string bs1(20);
@@ -97,7 +97,7 @@ void test_bucket_string_ostream_extraction(const char * filename)
 
     if (file.is_open())
     {
-        std::cout << "Reading from stream into bs1 ( file >> bs1 ) " << std::endl;
+        std::cout << "Reading from stream into bs1 ( file >> bs1; ) " << std::endl;
         file >> bs1;
         file.close();
     }
@@ -110,12 +110,12 @@ void test_bucket_string_ostream_extraction(const char * filename)
 
     bs1.dbg();
 
-    std::cout << "TEST 5: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
 }
 
 void test_bucket_string_forward_iteration()
 {
-    std::cout << "TEST 6: FORWARD ITERATION " << std::endl;
+    std::cout << "TEST: FORWARD ITERATION " << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
     bucket_string bs1(alphabet);                         
@@ -130,12 +130,14 @@ void test_bucket_string_forward_iteration()
         ++(*current);
     }
 
-    std::cout << "TEST 6: Passed" << std::endl;
+    std::cout << "TEST: Passed" << std::endl;
+    delete current;
+    delete end;
 }
 
 void test_bucket_string_backward_iteration()
 {
-    std::cout << "TEST 7: BACKWARD ITERATION " << std::endl;
+    std::cout << "TEST: BACKWARD ITERATION " << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
     bucket_string bs1(alphabet);                         
@@ -150,39 +152,60 @@ void test_bucket_string_backward_iteration()
         std::cout << (*current).tochar() << std::endl;
     } while ((*current) != (*begin));
 
-    std::cout << "TEST 7: Passed" << std::endl;
+    std::cout << "TEST: Passed" << std::endl;
+    delete current;
+    delete begin;
 }
 
 void test_bucket_string_substr()
 {
-    std::cout << "TEST 8: SUBSTRING " << std::endl;
+    std::cout << "TEST: SUBSTRING " << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
     bucket_string bs1(alphabet);                         
     bs1.dbg(); 
 
     iterator * start = bs1.begin();
-
     iterator * end1 = bs1.begin();
     (*end1)+=10;
 
     std::cout << "SUBSTRING begin : 10" << std::endl;
-    bucket_string bs2 = bs1.substring(*start, *end1);
+    bucket_string& bs2 = bs1.substring(*start, *end1);
     bs2.dbg();
-
 
     iterator * end2 = bs1.end();
 
     std::cout << "SUBSTRING 10 : end" << std::endl;
-    bucket_string bs3 = bs1.substring(*end1, *end2);
+    bucket_string& bs3 = bs1.substring(*end1, *end2);
     bs3.dbg();
 
-    std::cout << "TEST 8: Passed " << std::endl;
+
+    iterator& i1 = *bs1.begin();
+    i1+=1;
+    iterator& i2 = i1+1;
+
+    std::cout << "SUBSTRING 1 : 2" << std::endl;
+    bucket_string& bs4 = bs1.substring(i1,i2);
+    bs4.dbg();
+
+    delete &i1;
+    delete &i2;
+
+
+
+
+    std::cout << "TEST: Passed " << std::endl;
+
+    delete start;
+    delete end1;
+    delete end2;
+    delete &bs2;
+    delete &bs3;
 }
 
 void test_bucket_string_char_append()
 {
-    std::cout << "TEST 9: CHAR * APPEND " << std::endl;
+    std::cout << "TEST: CHAR * APPEND " << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
     bucket_string bs1;                         
@@ -192,16 +215,20 @@ void test_bucket_string_char_append()
 
     bs1.dbg(); 
 
-    bucket_string bs2 = bs1 + alphabet + bs1;
+    bucket_string& bs2 = bs1 + alphabet;
+    bucket_string& bs3 = bs2 + bs1;
 
-    bs2.dbg();
+    bs3.dbg();
 
-    std::cout << "TEST 9: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
+
+    delete &bs2;
+    delete &bs3;
 }
 
 void test_bucket_string_insert()
 {
-    std::cout << "TEST 10: INSERT" << std::endl;
+    std::cout << "TEST: INSERT" << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
     bucket_string bs1(alphabet);    
@@ -211,16 +238,18 @@ void test_bucket_string_insert()
     bucket_string bs2(lorem);  
 
     std::cout << "INSERT bs2 into bs1 at begin+10" << std::endl;
-    bucket_string bs3 = bs1.insert((*bs1.begin())+10, bs2);
+    bucket_string& bs3 = bs1.insert((*bs1.begin())+10, bs2);
 
     bs3.dbg();
 
-    std::cout << "TEST 10: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
+
+    delete &bs3;
 }
 
 void test_bucket_string_replace()
 {
-    std::cout << "TEST 11: REPLACE" << std::endl;
+    std::cout << "TEST: REPLACE" << std::endl;
 
     std::cout << "CONSTRUCT bs1 with alphabet" << std::endl;
     bucket_string bs1(alphabet);    
@@ -231,11 +260,13 @@ void test_bucket_string_replace()
     iterator from = (*bs1.begin()) + 3;
     iterator to = (*bs1.begin()) + 20;
 
-    bucket_string bs3 = bs1.replace(from, to, bs2);
+    bucket_string& bs3 = bs1.replace(from, to, bs2);
 
     bs3.dbg();
 
-    std::cout << "TEST 11: Passed " << std::endl;
+    std::cout << "TEST: Passed " << std::endl;
+
+    delete &bs3;
 }
 
 
@@ -296,19 +327,20 @@ int main(int argc, char * argv[])
     std::cout << std::endl;
 
 
-
+    /* NOT NEEDED TESTS
     test_bucket_string_forward_iteration();
     std::cout << std::endl;
 
     test_bucket_string_backward_iteration();
     std::cout << std::endl;
 
+    test_bucket_string_char_append();
+    std::cout << std::endl;
+
+    */
 
 
     test_bucket_string_substr();
-    std::cout << std::endl;
-
-    test_bucket_string_char_append();
     std::cout << std::endl;
 
     test_bucket_string_insert();
